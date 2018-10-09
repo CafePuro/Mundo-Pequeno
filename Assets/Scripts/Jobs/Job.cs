@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * Created on Mon Oct 08 2018 by ZZZeMarcelo
+ *
+ * Copyright (c) 2018 Café Puro Digital Studio
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -6,7 +11,7 @@ using System;
 public class Job
 {
 
-    public Tile T {get; protected set;}
+    public Tile Tile {get; protected set;}
     public GameObject placer;
     public GameObject build;
     float jobTime;
@@ -14,9 +19,9 @@ public class Job
     Action<Job> cbJobComplete;
     Action<Job> cbJobCancel;
 
-    public Job(Tile tile, GameObject _placer, GameObject _build, Action<Job> cbJobComplete,  float JobTime = 1f)
+    public Job(Tile _tile, GameObject _placer, GameObject _build, Action<Job> cbJobComplete,  float JobTime = 1f)
     {
-        this.T = tile;
+        this.Tile = _tile;
         this.cbJobComplete += cbJobComplete;
         this.placer = _placer;
         this.build = _build;

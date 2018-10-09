@@ -8,7 +8,7 @@ public class NPCs : MonoBehaviour
 {
     //posicao do NPC no mapa
     Mapa mapa = Mapa.instance; //referencia ao mapa
-    public Tile T { get; protected set;}
+    public Tile Tile { get; protected set;}
 
     //Movimento
     public float speed = 5.0f;
@@ -32,7 +32,7 @@ public class NPCs : MonoBehaviour
 	void Start()
 	{
         NPCrigidbody = GetComponent<Rigidbody>();
-        T = mapa.GetTile(transform);
+        Tile = mapa.GetTile(transform);
     }
 
     void Update()
@@ -41,14 +41,14 @@ public class NPCs : MonoBehaviour
             jobOnPlayer = GetAJob();
         else
             {
-                if(!aCaminho && T != jobOnPlayer.T)
+                if(!aCaminho && Tile != jobOnPlayer.Tile)
                 {
                     jobOnPlayer.RegisterJobCompleteCallBack(OnJobEnded);
                     jobOnPlayer.RegisterJobCancelCallBack(OnJobEnded);
-                    SetNPCDestination(jobOnPlayer.T);
+                    SetNPCDestination(jobOnPlayer.Tile);
                     aCaminho = true;
                 }
-                if (T == jobOnPlayer.T)
+                if (Tile == jobOnPlayer.Tile)
                 {
                     aCaminho = false;
                     jobOnPlayer.DoWork(Time.deltaTime);
@@ -67,7 +67,7 @@ public class NPCs : MonoBehaviour
 
     public void SetNPCDestination(Tile targetTile)
     {
-        PathRequestManager.RequestPath(T, targetTile, OnPathFound);
+        PathRequestManager.RequestPath(Tile, targetTile, OnPathFound);
     }
 
     public void OnPathFound(Tile[] newPath, bool pathSuccessful)
@@ -96,7 +96,7 @@ public class NPCs : MonoBehaviour
                 if (targetIndex == path.Length)
                 {
                     Debug.Log("Cheguei!");
-                    T = mapa.GetTile(transform);
+                    Tile = mapa.GetTile(transform);
                     yield break;
                 }
                 currentWaypoint = path[targetIndex].GetTileCenter();
@@ -114,7 +114,7 @@ public class NPCs : MonoBehaviour
             
             moveAmount = Vector3.SmoothDamp(moveAmount, targetMoveAmount, ref smoothVelocity, .15f);
             NPCrigidbody.MovePosition(NPCrigidbody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
-            T = mapa.GetTile(transform);
+            Tile = mapa.GetTile(transform);
             yield return null;
         }
     }
